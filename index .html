@@ -1,0 +1,978 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A.M. Jain College - Campus Feedback System</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f2f5fb;
+    color: #202b3c;
+}
+
+header {
+    background: #102d5e;
+    color: white;
+    text-align: center;
+    padding: 22px 12px;
+}
+
+header h1 {
+    font-size: 26px;
+    margin-bottom: 7px;
+}
+
+header p {
+    font-size: 14px;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: #fff;
+    padding: 13px;
+    box-shadow: 0 2px 8px #0001;
+}
+
+nav button {
+    background: #173f7a;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+nav button:hover {
+    background: #285ba1;
+}
+
+.container {
+    width: 94%;
+    max-width: 1100px;
+    margin: 25px auto;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.card {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 22px;
+    box-shadow: 0 3px 12px #0000000d;
+}
+
+h2 {
+    color: #102d5e;
+    margin-bottom: 17px;
+}
+
+h3 {
+    color: #173f7a;
+    margin-bottom: 12px;
+}
+
+p {
+    line-height: 1.6;
+}
+
+label {
+    display: block;
+    margin: 15px 0 7px;
+    font-weight: bold;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd4e2;
+    border-radius: 6px;
+    font-size: 15px;
+    background: white;
+}
+
+textarea {
+    min-height: 95px;
+    resize: vertical;
+}
+
+.main-btn {
+    background: #173f7a;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 17px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.main-btn:hover {
+    background: #285ba1;
+}
+
+.secondary-btn {
+    background: #64748b;
+}
+
+.danger-btn {
+    background: #b42332;
+}
+
+.star-rating {
+    display: flex;
+    gap: 8px;
+    margin-top: 7px;
+}
+
+.star {
+    border: none;
+    background: none;
+    color: #c7ced8;
+    font-size: 36px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.star.selected {
+    color: #f4b400;
+}
+
+#ratingText {
+    margin-top: 5px;
+    color: #526178;
+    font-size: 14px;
+}
+
+.home-banner {
+    background: #e4edff;
+    border-left: 5px solid #173f7a;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.stat-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 10px #0000000c;
+}
+
+.stat-box h3 {
+    font-size: 27px;
+    margin: 8px 0;
+}
+
+.stat-box p {
+    color: #5b6575;
+    font-size: 14px;
+}
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 780px;
+    background: white;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #d7deea;
+    text-align: left;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+th {
+    background: #173f7a;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #f4f7fc;
+}
+
+.filter-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.feedback-item {
+    border: 1px solid #dce3ed;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 12px;
+}
+
+.feedback-item p {
+    margin-top: 6px;
+}
+
+.rating-stars {
+    color: #e6a400;
+}
+
+.notice {
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 12px;
+    display: none;
+}
+
+.success {
+    background: #e2f7e9;
+    color: #176536;
+}
+
+.error {
+    background: #ffe6e6;
+    color: #a11b1b;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #102d5e;
+    color: white;
+    margin-top: 35px;
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 21px;
+    }
+
+    .card {
+        padding: 17px;
+    }
+
+    nav button {
+        padding: 10px 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>A.M. Jain College</h1>
+    <p>Campus Feedback Management System</p>
+</header>
+
+<nav>
+    <button onclick="showPage('homePage')">Home</button>
+    <button onclick="showPage('studentPage')">Student Feedback</button>
+    <button onclick="showPage('adminPage')">Admin Login</button>
+</nav>
+
+<div class="container">
+
+    <!-- HOME PAGE -->
+    <section id="homePage" class="page active">
+        <div class="card">
+            <h2>Welcome to A.M. Jain College</h2>
+            <p>
+                The Campus Feedback System helps students share their opinions
+                about college facilities and services. The administration can
+                review feedback and identify areas that need improvement.
+            </p>
+
+            <div class="home-banner">
+                <h3>How to Submit Feedback</h3>
+                <p>1. Open the Student Feedback page.</p>
+                <p>2. Enter your name.</p>
+                <p>3. Select a college facility.</p>
+                <p>4. Choose a star rating.</p>
+                <p>5. Add a message if you wish. It is optional.</p>
+                <p>6. Click Submit Feedback.</p>
+            </div>
+
+            <button class="main-btn" onclick="showPage('studentPage')">
+                Give Feedback
+            </button>
+        </div>
+    </section>
+
+    <!-- STUDENT FEEDBACK PAGE -->
+    <section id="studentPage" class="page">
+        <div class="card">
+            <h2>Student Feedback Form</h2>
+            <p>Please rate the college facility you have used.</p>
+
+            <form id="feedbackForm">
+                <label for="studentName">Student Name *</label>
+                <input
+                    type="text"
+                    id="studentName"
+                    placeholder="Enter your name"
+                    required
+                >
+
+                <label for="facility">Select Facility *</label>
+                <select id="facility" required>
+                    <option value="">-- Select a Facility --</option>
+                    <option>Classrooms</option>
+                    <option>Smart Classrooms</option>
+                    <option>Computer Laboratory</option>
+                    <option>Physics Laboratory</option>
+                    <option>Chemistry Laboratory</option>
+                    <option>Biology Laboratory</option>
+                    <option>Library</option>
+                    <option>Digital Library</option>
+                    <option>Reading Room</option>
+                    <option>College Canteen</option>
+                    <option>Drinking Water</option>
+                    <option>Washrooms</option>
+                    <option>Campus Cleanliness</option>
+                    <option>Campus Maintenance</option>
+                    <option>College Building</option>
+                    <option>Furniture</option>
+                    <option>Fans and Ventilation</option>
+                    <option>Air Conditioning</option>
+                    <option>Lighting</option>
+                    <option>Wi-Fi Facility</option>
+                    <option>Internet Connectivity</option>
+                    <option>Projectors</option>
+                    <option>Computer Equipment</option>
+                    <option>Laboratory Equipment</option>
+                    <option>Sports Ground</option>
+                    <option>Indoor Sports</option>
+                    <option>Outdoor Sports</option>
+                    <option>Gymnasium</option>
+                    <option>Parking Facility</option>
+                    <option>College Bus</option>
+                    <option>Transport Services</option>
+                    <option>College Office</option>
+                    <option>Admission Office</option>
+                    <option>Examination Cell</option>
+                    <option>Accounts Office</option>
+                    <option>Student Help Desk</option>
+                    <option>Teaching Quality</option>
+                    <option>Teaching Methods</option>
+                    <option>Faculty Support</option>
+                    <option>Non-Teaching Staff Support</option>
+                    <option>Department Facilities</option>
+                    <option>Placement Cell</option>
+                    <option>Career Guidance</option>
+                    <option>Internship Support</option>
+                    <option>Scholarship Support</option>
+                    <option>Student Counselling</option>
+                    <option>Medical Facilities</option>
+                    <option>First Aid</option>
+                    <option>Security Services</option>
+                    <option>Campus Safety</option>
+                    <option>CCTV Surveillance</option>
+                    <option>Fire Safety</option>
+                    <option>Accessibility Facilities</option>
+                    <option>Ramps and Lifts</option>
+                    <option>Seminar Hall</option>
+                    <option>Auditorium</option>
+                    <option>Conference Hall</option>
+                    <option>College Events</option>
+                    <option>Cultural Activities</option>
+                    <option>Clubs and Associations</option>
+                    <option>NSS Activities</option>
+                    <option>NCC Activities</option>
+                    <option>Website and Online Services</option>
+                    <option>Online Learning Resources</option>
+                    <option>Attendance System</option>
+                    <option>Fee Payment System</option>
+                    <option>Notice Board</option>
+                    <option>Student Common Room</option>
+                    <option>Garden and Greenery</option>
+                    <option>Waste Management</option>
+                    <option>Rainwater Harvesting</option>
+                    <option>Power Supply</option>
+                    <option>Backup Power</option>
+                    <option>Hostel Facility</option>
+                    <option>Other Facilities</option>
+                </select>
+
+                <label>Rating *</label>
+                <div class="star-rating" id="starRating">
+                    <button type="button" class="star" data-value="1"
+                        aria-label="1 star">★</button>
+                    <button type="button" class="star" data-value="2"
+                        aria-label="2 stars">★</button>
+                    <button type="button" class="star" data-value="3"
+                        aria-label="3 stars">★</button>
+                    <button type="button" class="star" data-value="4"
+                        aria-label="4 stars">★</button>
+                    <button type="button" class="star" data-value="5"
+                        aria-label="5 stars">★</button>
+                </div>
+                <p id="ratingText">Choose a rating from 1 to 5 stars.</p>
+
+                <label for="message">
+                    Message / Suggestions (Optional)
+                </label>
+                <textarea
+                    id="message"
+                    placeholder="Enter your message if you wish (optional)"
+                ></textarea>
+
+                <button type="submit" class="main-btn">
+                    Submit Feedback
+                </button>
+
+                <button type="reset" class="main-btn secondary-btn">
+                    Reset
+                </button>
+
+                <div id="studentNotice" class="notice"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- ADMIN LOGIN PAGE -->
+    <section id="adminPage" class="page">
+        <div class="card">
+            <h2>Admin Login</h2>
+            <p>Only the administrator can access the dashboard.</p>
+
+            <form id="adminLoginForm">
+                <label for="adminUsername">Username</label>
+                <input
+                    type="text"
+                    id="adminUsername"
+                    placeholder="Enter admin username"
+                    required
+                >
+
+                <label for="adminPassword">Password</label>
+                <input
+                    type="password"
+                    id="adminPassword"
+                    placeholder="Enter admin password"
+                    required
+                >
+
+                <button type="submit" class="main-btn">Login</button>
+                <div id="loginNotice" class="notice"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- ADMIN DASHBOARD -->
+    <section id="dashboardPage" class="page">
+        <div class="card">
+            <h2>Admin Dashboard</h2>
+            <p>View, search, filter and export student feedback.</p>
+            <button class="main-btn secondary-btn" onclick="logout()">
+                Logout
+            </button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <p>Total Feedback</p>
+                <h3 id="totalFeedback">0</h3>
+            </div>
+            <div class="stat-box">
+                <p>Average Rating</p>
+                <h3 id="averageRating">0.0 ★</h3>
+            </div>
+            <div class="stat-box">
+                <p>4–5 Star Feedback</p>
+                <h3 id="goodFeedback">0</h3>
+            </div>
+            <div class="stat-box">
+                <p>Facilities Reviewed</p>
+                <h3 id="facilitiesReviewed">0</h3>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Facility-wise Rating Summary</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Facility</th>
+                            <th>Total Feedback</th>
+                            <th>Average Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody id="facilitySummaryBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>All Student Feedback - Excel View</h2>
+            <p>
+                Use the search and facility filter to find feedback.
+                Select Download Excel CSV to open the data in Excel.
+            </p>
+
+            <div class="filter-row">
+                <input
+                    type="search"
+                    id="searchFeedback"
+                    placeholder="Search student, facility or message..."
+                >
+                <select id="filterFacility">
+                    <option value="">All Facilities</option>
+                </select>
+            </div>
+
+            <div class="table-wrap">
+                <table id="feedbackTable">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Student Name</th>
+                            <th>Facility</th>
+                            <th>Rating</th>
+                            <th>Message / Suggestions</th>
+                            <th>Date &amp; Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="feedbackTableBody"></tbody>
+                </table>
+            </div>
+
+            <button class="main-btn" onclick="exportCSV()">
+                Download Excel CSV
+            </button>
+
+            <button class="main-btn danger-btn" onclick="clearFeedback()">
+                Clear All Feedback
+            </button>
+        </div>
+    </section>
+</div>
+
+<footer>
+    <p>A.M. Jain College | Campus Feedback Management System</p>
+</footer>
+
+<script>
+const STORAGE_KEY = "amj_campus_feedback_v2";
+
+let selectedRating = 0;
+let isAdminLoggedIn = false;
+
+function getFeedback() {
+    try {
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        return Array.isArray(data) ? data : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function saveFeedback(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function showPage(pageId) {
+    if (pageId === "dashboardPage" && !isAdminLoggedIn) {
+        pageId = "adminPage";
+    }
+
+    document.querySelectorAll(".page").forEach(function(page) {
+        page.classList.remove("active");
+    });
+
+    document.getElementById(pageId).classList.add("active");
+
+    if (pageId === "dashboardPage") {
+        renderDashboard();
+    }
+}
+
+function showNotice(elementId, message, type) {
+    const notice = document.getElementById(elementId);
+    notice.textContent = message;
+    notice.className = "notice " + type;
+    notice.style.display = "block";
+}
+
+function hideNotice(elementId) {
+    const notice = document.getElementById(elementId);
+    notice.style.display = "none";
+    notice.textContent = "";
+}
+
+/* STAR RATING */
+const stars = document.querySelectorAll(".star");
+const ratingText = document.getElementById("ratingText");
+
+function updateStars() {
+    stars.forEach(function(star) {
+        const value = Number(star.dataset.value);
+        star.classList.toggle("selected", value <= selectedRating);
+    });
+
+    const labels = {
+        1: "1 star - Poor",
+        2: "2 stars - Fair",
+        3: "3 stars - Good",
+        4: "4 stars - Very Good",
+        5: "5 stars - Excellent"
+    };
+
+    ratingText.textContent = selectedRating
+        ? labels[selectedRating]
+        : "Choose a rating from 1 to 5 stars.";
+}
+
+stars.forEach(function(star) {
+    star.addEventListener("click", function() {
+        selectedRating = Number(star.dataset.value);
+        updateStars();
+    });
+});
+
+/* STUDENT FEEDBACK SUBMISSION */
+document.getElementById("feedbackForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    hideNotice("studentNotice");
+
+    const studentName = document.getElementById("studentName").value.trim();
+    const facility = document.getElementById("facility").value;
+    const message = document.getElementById("message").value.trim();
+
+    if (!studentName || !facility) {
+        showNotice("studentNotice", "Please enter your name and select a facility.", "error");
+        return;
+    }
+
+    if (selectedRating < 1 || selectedRating > 5) {
+        showNotice("studentNotice", "Please select a star rating.", "error");
+        return;
+    }
+
+    const feedback = getFeedback();
+
+    feedback.push({
+        id: Date.now().toString() + Math.random().toString(36).slice(2),
+        studentName: studentName,
+        facility: facility,
+        rating: selectedRating,
+        message: message,
+        date: new Date().toLocaleString()
+    });
+
+    try {
+        saveFeedback(feedback);
+    } catch (error) {
+        showNotice(
+            "studentNotice",
+            "Unable to save feedback in this browser. Please check available storage.",
+            "error"
+        );
+        return;
+    }
+
+    this.reset();
+    selectedRating = 0;
+    updateStars();
+
+    showNotice(
+        "studentNotice",
+        "Thank you! Your feedback has been submitted successfully.",
+        "success"
+    );
+});
+
+/* RESET STAR RATING */
+document.getElementById("feedbackForm").addEventListener("reset", function() {
+    selectedRating = 0;
+    updateStars();
+    hideNotice("studentNotice");
+});
+
+/* ADMIN LOGIN */
+document.getElementById("adminLoginForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("adminUsername").value.trim();
+    const password = document.getElementById("adminPassword").value;
+
+    // Demo credentials only. Change these before any real deployment.
+    if (username === "admin" && password === "admin123") {
+        isAdminLoggedIn = true;
+        this.reset();
+        hideNotice("loginNotice");
+        showPage("dashboardPage");
+    } else {
+        showNotice(
+            "loginNotice",
+            "Incorrect username or password. Please try again.",
+            "error"
+        );
+    }
+});
+
+function logout() {
+    isAdminLoggedIn = false;
+    showPage("homePage");
+}
+
+/* SAFE TABLE CELL CREATION */
+function addCell(row, value) {
+    const cell = document.createElement("td");
+    cell.textContent = value;
+    row.appendChild(cell);
+    return cell;
+}
+
+function getAverage(items) {
+    if (items.length === 0) return 0;
+
+    return items.reduce(function(sum, item) {
+        return sum + Number(item.rating || 0);
+    }, 0) / items.length;
+}
+
+/* DASHBOARD */
+function renderDashboard() {
+    if (!isAdminLoggedIn) return;
+
+    const feedback = getFeedback();
+
+    document.getElementById("totalFeedback").textContent = feedback.length;
+    document.getElementById("averageRating").textContent =
+        getAverage(feedback).toFixed(1) + " ★";
+
+    document.getElementById("goodFeedback").textContent =
+        feedback.filter(function(item) {
+            return Number(item.rating) >= 4;
+        }).length;
+
+    const facilityNames = [...new Set(feedback.map(function(item) {
+        return item.facility;
+    }))];
+
+    document.getElementById("facilitiesReviewed").textContent = facilityNames.length;
+
+    renderFacilitySummary(feedback);
+    populateFacilityFilter(feedback);
+    renderFeedbackTable();
+}
+
+function renderFacilitySummary(feedback) {
+    const body = document.getElementById("facilitySummaryBody");
+    body.replaceChildren();
+
+    const facilityNames = [...new Set(feedback.map(function(item) {
+        return item.facility;
+    }))].sort();
+
+    if (facilityNames.length === 0) {
+        const row = body.insertRow();
+        const cell = row.insertCell();
+        cell.colSpan = 4;
+        cell.textContent = "No feedback has been submitted yet.";
+        return;
+    }
+
+    facilityNames.forEach(function(facility, index) {
+        const items = feedback.filter(function(item) {
+            return item.facility === facility;
+        });
+
+        const row = body.insertRow();
+        addCell(row, index + 1);
+        addCell(row, facility);
+        addCell(row, items.length);
+        addCell(row, getAverage(items).toFixed(1) + " ★");
+    });
+}
+
+function populateFacilityFilter(feedback) {
+    const select = document.getElementById("filterFacility");
+    const previousValue = select.value;
+
+    const facilities = [...new Set(feedback.map(function(item) {
+        return item.facility;
+    }))].sort();
+
+    select.replaceChildren();
+
+    const allOption = document.createElement("option");
+    allOption.value = "";
+    allOption.textContent = "All Facilities";
+    select.appendChild(allOption);
+
+    facilities.forEach(function(facility) {
+        const option = document.createElement("option");
+        option.value = facility;
+        option.textContent = facility;
+        select.appendChild(option);
+    });
+
+    if (facilities.includes(previousValue)) {
+        select.value = previousValue;
+    }
+}
+
+function renderFeedbackTable() {
+    const body = document.getElementById("feedbackTableBody");
+    body.replaceChildren();
+
+    const searchText = document.getElementById("searchFeedback")
+        .value.trim().toLowerCase();
+
+    const selectedFacility = document.getElementById("filterFacility").value;
+
+    const filtered = getFeedback().filter(function(item) {
+        const matchesFacility = !selectedFacility ||
+            item.facility === selectedFacility;
+
+        const searchableText = [
+            item.studentName,
+            item.facility,
+            item.message
+        ].join(" ").toLowerCase();
+
+        return matchesFacility && searchableText.includes(searchText);
+    });
+
+    if (filtered.length === 0) {
+        const row = body.insertRow();
+        const cell = row.insertCell();
+        cell.colSpan = 6;
+        cell.textContent = "No matching feedback found.";
+        return;
+    }
+
+    filtered.forEach(function(item, index) {
+        const row = body.insertRow();
+        addCell(row, index + 1);
+        addCell(row, item.studentName || "");
+        addCell(row, item.facility || "");
+        addCell(row, "★".repeat(Number(item.rating) || 0));
+        addCell(row, item.message || "—");
+        addCell(row, item.date || "");
+    });
+}
+
+document.getElementById("searchFeedback").addEventListener("input", renderFeedbackTable);
+document.getElementById("filterFacility").addEventListener("change", renderFeedbackTable);
+
+/* EXPORT EXCEL-COMPATIBLE CSV */
+function exportCSV() {
+    if (!isAdminLoggedIn) return;
+
+    const feedback = getFeedback();
+
+    if (feedback.length === 0) {
+        alert("There is no feedback to export yet.");
+        return;
+    }
+
+    const headers = [
+        "S.No",
+        "Student Name",
+        "Facility",
+        "Rating",
+        "Message / Suggestions",
+        "Date & Time"
+    ];
+
+    function escapeCSV(value) {
+        let text = String(value ?? "");
+
+        // Prevent spreadsheet formula injection.
+        if (/^[\s]*[=+\-@]/.test(text)) {
+            text = "'" + text;
+        }
+
+        return '"' + text.replace(/"/g, '""') + '"';
+    }
+
+    const rows = [headers];
+
+    feedback.forEach(function(item, index) {
+        rows.push([
+            index + 1,
+            item.studentName,
+            item.facility,
+            item.rating,
+            item.message || "",
+            item.date
+        ]);
+    });
+
+    const csvContent = "\uFEFF" + rows.map(function(row) {
+        return row.map(escapeCSV).join(",");
+    }).join("\r\n");
+
+    const blob = new Blob([csvContent], {
+        type: "text/csv;charset=utf-8;"
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "AMJ_College_Feedback.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    URL.revokeObjectURL(url);
+}
+
+/* CLEAR FEEDBACK */
+function clearFeedback() {
+    if (!isAdminLoggedIn) return;
+
+    const confirmed = confirm(
+        "Are you sure you want to delete ALL feedback? This cannot be undone."
+    );
+
+    if (!confirmed) return;
+
+    saveFeedback([]);
+    renderDashboard();
+    alert("All feedback has been cleared.");
+}
+
+updateStars();
+</script>
+
+</body>
+</html>
